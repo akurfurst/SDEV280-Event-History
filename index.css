@@ -1,6 +1,25 @@
 * {
     /* border: 1px solid red; */
     box-sizing: border-box;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+header {
+    display: flex;
+}
+
+.logo {
+    width: 10rem;
+    padding: 1rem;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+}
+
+h1 {
+    color: #335687;
 }
 
 main {
@@ -16,12 +35,74 @@ li {
     list-style: none;
 }
 
+.left_nav {
+    width: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+
+}
+
+.nav_label {
+    text-align: center;
+}
+
+.nav_label h4 {
+    margin: 0;
+    color: white;
+    padding: 0.5rem;
+    background-color: #002744;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.nav_items {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
 .nav_item {
-    margin: 0 1rem 1rem;
+    background-color: #f6f8f9;
+    width: 100%;
+    padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.nav_item:first-child {
+    padding-top: 0.75rem;
+}
+
+.nav_item:last-child {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
 }
 
 .nav_item button {
-    width: 100%;
+
+    background: none;
+    /* Removes the background color */
+    color: inherit;
+    /* Inherits text color from parent */
+    border: none;
+    /* Removes the border */
+    padding: 0;
+    /* Removes default padding */
+    font: inherit;
+    /* Inherits font styles */
+    cursor: pointer;
+    /* Ensures the cursor remains a hand pointer */
+    outline: inherit;
+
+}
+
+.nav_item button:hover {
+    text-decoration: underline;
 }
 
 .bottom_section {
