@@ -234,30 +234,30 @@ function renderTable() {
     }
 
     // Add rows for current page
-    currentPageData.forEach((item, index) => {
-        console.log(`Processing item ${index}:`, item.name);
-        
-        const processedItem = processTierData(item);
-        
-        const row = document.createElement('tr');
-        row.style.cursor = 'pointer';
-        row.innerHTML = `
-            <td>${processedItem.name || 'N/A'}</td>
-            <td>${processedItem.start_date || 'N/A'}</td>
-            <td><span class="tier-badge ${processedItem.tierCode || ''}">${processedItem.tier || 'N/A'}</span></td>
-            <td>${processedItem.city || 'N/A'}</td>
-            <td>${processedItem.state || 'N/A'}</td>
-            <td>${processedItem.country || 'N/A'}</td>
-        `;
-        
-        row.addEventListener('click', () => {
-            selectedEvent = processedItem;
-            continualId = processedItem.id;
-            console.log('Event clicked:', processedItem.name);
-        });
-        
-        tableBody.appendChild(row);
-    });
+  currentPageData.forEach((item, index) => {
+      console.log(`Processing item ${index}:`, item.name);
+      
+      const processedItem = processTierData(item);
+      
+      const row = document.createElement('tr');
+      row.style.cursor = 'pointer';
+      row.innerHTML = `
+          <td>${processedItem.name || 'N/A'}</td>
+          <td>${processedItem.start_date || 'N/A'}</td>
+          <td><span class="tier-badge ${processedItem.tierCode || ''}">${processedItem.tier || 'N/A'}</span></td>
+          <td>${processedItem.city || 'N/A'}</td>
+          <td>${processedItem.state || 'N/A'}</td>
+          <td>${processedItem.country || 'N/A'}</td>
+      `;
+      
+      row.addEventListener('click', async () => {
+          // Store the event in sessionStorage and redirect to index.html
+          sessionStorage.setItem('selectedEventId', processedItem.id);
+          window.location.href = 'index.html';
+      });
+      
+      tableBody.appendChild(row);
+  });
 
     console.log(`Added ${currentPageData.length} rows to table`);
 
@@ -273,4 +273,5 @@ function renderTable() {
     console.log('Pagination controls updated');
     
     console.log('=== renderTable complete ===');
+
 }
