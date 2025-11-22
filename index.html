@@ -17,6 +17,9 @@
       <a href="index.html" class="logo">
         <img src="./assets/logo.png" alt="pdga_logo" />
       </a>
+      <button id="header-back-btn" class="header-back-button hidden">
+        Return to All Events
+      </button>
       <nav>
         <div class="event-search">
           <form id="searchForm">
@@ -51,7 +54,7 @@
             <option value="">All Divisions</option>
           </select>
         </div>
-        <div class="filter-item">
+        <!-- <div class="filter-item">
           <label for="tier">Event Tier</label>
           <select id="tier">
             <option value="">All Tiers</option>
@@ -65,16 +68,17 @@
             <option value="Tier-XC">Tier-XC</option>
             <option value="Tier-XM">Tier-XM</option>
           </select>
-        </div>
+        </div> -->
         <div class="filter-item">
           <label for="country">Country</label>
           <select id="country">
             <option value="">All Countries</option>
           </select>
         </div>
-      </div>
-      <div class="filter-actions">
-        <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
+        <div class="filter-item">
+          <label>&nbsp;</label>
+          <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
+        </div>
       </div>
     </div>
 

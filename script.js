@@ -7,6 +7,8 @@ import {
   fillEmptyRows,
   relocatePaginationControls,
   activateBackToAllEventsBtn,
+  showHeaderBackButton,
+  hideHeaderBackButton,
   initPagination,
   getPaginationInfo,
   getCurrentPageData,
@@ -116,7 +118,7 @@ if (selectedEventId) {
   // Initialize filter functionality
   populateYearsFilter();
   populateDivisionsFilter();
-  populateTiersFilter();
+  // populateTiersFilter(); // Commented out - tier filter removed from UI
   populateCountriesFilter();
   initializeFilters();
 
@@ -213,12 +215,12 @@ async function populateDivisionsFilter() {
 function filterEvents() {
   const yearSelect = document.getElementById("year");
   const divisionSelect = document.getElementById("division");
-  const tierSelect = document.getElementById("tier");
+  // const tierSelect = document.getElementById("tier"); // Commented out - tier filter removed from UI
   const countrySelect = document.getElementById("country");
 
   const selectedYear = yearSelect.value;
   const selectedDivision = divisionSelect.value;
-  const selectedTier = tierSelect.value;
+  // const selectedTier = tierSelect.value; // Commented out - tier filter removed from UI
   const selectedCountry = countrySelect.value;
 
   let filteredEvents = [...recentEventsList];
@@ -233,18 +235,20 @@ function filterEvents() {
   }
 
   // Filter by tier
-  if (selectedTier && selectedTier !== "All Tiers") {
-    filteredEvents = filteredEvents.filter((event) => {
-      const processedEvent = processTierData({ ...event });
-      return processedEvent.tier === selectedTier;
-    });
-  }
+  // if (selectedTier && selectedTier !== "All Tiers") {
+  //   filteredEvents = filteredEvents.filter((event) => {
+  //     const processedEvent = processTierData({ ...event });
+  //     return processedEvent.tier === selectedTier;
+  //   });
+  // }
 
-  // Filter by country
+  // Filter by country - check if the event was played in the selected country at any point
   if (selectedCountry && selectedCountry !== "All Countries") {
-    filteredEvents = filteredEvents.filter(
-      (event) => event.country === selectedCountry
-    );
+    filteredEvents = filteredEvents.filter((event) => {
+      // For country filtering, we need to check if any event in the continual series was played in that country
+      const continualEvents = allEventsData.filter((e) => e.id === event.id);
+      return continualEvents.some((e) => e.country === selectedCountry);
+    });
   }
 
   // Filter by division - check if any event in the continual series had that division
@@ -263,7 +267,7 @@ function filterEvents() {
 function initializeFilters() {
   const yearSelect = document.getElementById("year");
   const divisionSelect = document.getElementById("division");
-  const tierSelect = document.getElementById("tier");
+  // const tierSelect = document.getElementById("tier"); // Commented out - tier filter removed from UI
   const countrySelect = document.getElementById("country");
   const clearFiltersBtn = document.getElementById("clearFilters");
 
@@ -275,9 +279,9 @@ function initializeFilters() {
     divisionSelect.addEventListener("change", filterEvents);
   }
 
-  if (tierSelect) {
-    tierSelect.addEventListener("change", filterEvents);
-  }
+  // if (tierSelect) {
+  //   tierSelect.addEventListener("change", filterEvents);
+  // }
 
   if (countrySelect) {
     countrySelect.addEventListener("change", filterEvents);
@@ -292,12 +296,12 @@ function initializeFilters() {
 function clearFilters() {
   const yearSelect = document.getElementById("year");
   const divisionSelect = document.getElementById("division");
-  const tierSelect = document.getElementById("tier");
+  // const tierSelect = document.getElementById("tier"); // Commented out - tier filter removed from UI
   const countrySelect = document.getElementById("country");
 
   if (yearSelect) yearSelect.value = "";
   if (divisionSelect) divisionSelect.value = "";
-  if (tierSelect) tierSelect.value = "";
+  // if (tierSelect) tierSelect.value = ""; // Commented out - tier filter removed from UI
   if (countrySelect) countrySelect.value = "";
 
   // Reset to show all events
