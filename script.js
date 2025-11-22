@@ -50,6 +50,20 @@ const eventDivisionsMap = new Map();
     getAllEventsDetails(),
   ]);
 
+  // Check if coming from search page with selected event
+const selectedEventId = sessionStorage.getItem('selectedEventId');
+if (selectedEventId) {
+  sessionStorage.removeItem('selectedEventId');
+  // Find and click the event after data loads
+  setTimeout(() => {
+    const event = recentEventsList.find(e => e.id === parseInt(selectedEventId));
+    if (event) {
+      // Trigger the click event programmatically
+      handleEventClick(event);
+    }
+  }, 500);
+}
+  
   // map all events with continualId
   allEventsDetails.forEach((event) => {
     // continualId = newId
@@ -330,6 +344,82 @@ function renderEvent() {
 //
 // --------------------------------------------------------------------------------------------------------------------------
 
+// Extract event click handler as reusable function
+async function handleEventClick(item) {
+  // Assign selectedEvent
+  selectedEvent = item;
+
+  // Assign selectedEvent continualId
+  continualId = item.id;
+
+  // Get selectedEvent data from allEventsData
+  const unsortedSelectedEvent = allEventsData.filter(
+    (event) => event.id === continualId
+  );
+
+  // Gather all pdga_event_id for query additional data
+  const pdgaEventIds = [];
+  unsortedSelectedEvent.forEach((event) => {
+    pdgaEventIds.push(event.pdga_event_id);
+  });
+
+  const [additionalData, eventsResult] = await Promise.all([
+    getParticipantsAndPrizesPerYearByPdgaEventIds(pdgaEventIds),
+    getEventsResultByPdgaEventIds(pdgaEventIds),
+  ]);
+
+  // Map to new array
+  const newUnsortedSelectedEvent = [];
+  unsortedSelectedEvent.forEach((event) => {
+    const playersCount =
+      additionalData.find((e) => e.pdga_event_id === event.pdga_event_id)
+        ?.players_count || "N/A";
+    const totalPrize =
+      additionalData.find((e) => e.pdga_event_id === event.pdga_event_id)
+        ?.total_prize || "N/A";
+    newUnsortedSelectedEvent.push({
+      ...event,
+      players_count: playersCount,
+      total_prize: totalPrize,
+    });
+  });
+  pastEventsList = sortingEventsByDate(newUnsortedSelectedEvent);
+
+  const pdgaNumbers = [];
+  eventsResult.forEach((winner) => {
+    winner.pdga_number && pdgaNumbers.push(winner.pdga_number);
+  });
+
+  const winnersData = await getPlayersByPdgaNumbers(pdgaNumbers);
+
+  eventsResult.forEach((event) => {
+    const player = winnersData.find(
+      (p) => String(p.pdga_number) === String(event.pdga_number)
+    );
+    event.player_name = player
+      ? `${player.first_name} ${player.last_name}`
+      : "N/A";
+  });
+
+  selectedEventsResult = eventsResult;
+
+  renderEvent();
+
+  // move pagination button to the past events table
+  const paginationContainer = document.getElementById(
+    "pagination-container"
+  );
+  const newParent = document.getElementById("past-events-table");
+  relocatePaginationControls(paginationContainer, newParent);
+
+  // Adjust CSS accordingly
+  document.getElementById("past-events-table").style.display = "block";
+  document.getElementById("btn-container").style.display = "flex";
+  document.getElementById("events-table").style.display = "none";
+
+  initPagination(pastEventsList, renderPastEventsTable);
+}
+
 function renderTable() {
   const tableBody = document.getElementById("tableBody");
   const { data: pageData } = getCurrentPageData();
@@ -465,3 +555,4 @@ export function handleVizButtonClick(buttonText) {
       console.error("Unknown visualization button:", buttonText);
   }
 }
+
