@@ -2,90 +2,225 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event History Summary - PDGA</title>
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+  <link rel="stylesheet" href="index.css" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js"></script>
 </head>
 
 <body>
-    <Header>
-        <div class="logo">
-            <img src="./assets/logos/logo.png" alt="PDGA Logo">
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">
+        <img src="./assets/logo.png" alt="pdga_logo" />
+      </a>
+      <nav>
+        <div class="event-search">
+          <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Search events..." />
+          </form>
         </div>
-        <h1>
-            Professional Disc Golf Association
-        </h1>
-    </Header>
-    <main>
-        <nav class="left_nav">
-            <div class="nav_label"><h4>Events</h4></div>
-            <ul class="nav_items">
-                <li class="nav_item"><button>US</button></li>
-                <!-- <form>
-                    <input type="radio">
-                    <label>Terron Open</label>
-                </form> -->
-                <li class="nav_item"><button>Canada</button></li>
-                <li class="nav_item"><button>Europe</button></li>
-                <li class="nav_item"><button>International</button></li>
-            </ul>
-        </nav>
-        <div class="main_content">
-            <div class="top_section">
-                <h1>Terron Open Events</h1>
-                <div class="description">
-                    <p>Basic stats from the history of this event. Line graph of how many points the winner for each
-                        event scored</p>
-                </div>
-            </div>
-            <div class="bottom_section">
-                <div class="bottom_section-left">
-                    <div>
-                        <ul>
-                            <li>Date: 2020-Present</li>
-                            <li>Torurnament Director: <a
-                                    href="https://www.pdga.com/general-contact?pdganum=71872&token=8b43edcdaf22c01bbfde2e6627375c90ae6a82d0">Tyler
-                                    Schrock</a></li>
-                            <li>Website: <a
-                                    href="https://www.discgolfscene.com/tournaments/TerRon_Open_at_Lake_Fenwick_2020">discgolfscene.com</a>
-                            </li>
-                            <li>Location: Kent, Washington, United States</li>
-                            <li>Course: Lake Fenwick</li>
-                            <li>Holes: 21</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="bottom_section-right">
-                    <section class="bottom_section-upper-right">
-                        <div>
-                            <p>More detailed information about mose recent event.</p>
-                        </div>
-                    </section>
-                    <section class="bottom_section-lower-right">
-                        <h3>Event history</h3>
-                        <ul>
-                            <li><a href="https://www.pdga.com/tour/event/95906">TerRon Open 2025</a></li>
-                            <li><a href="https://www.pdga.com/tour/event/85253">TerRon Open, sponsored by Mandos Disc
-                                    Golf Pro Shop</a></li>
-                            <li><a href="https://www.pdga.com/tour/event/73697">TerRon Open sponsored by Mandos Disc
-                                    Golf Pro Shop</a></li>
-                            <li><a href="https://www.pdga.com/tour/event/62889">TerRon Open, sponsored by Mandos Disc
-                                    Golf Pro Shop, MVP Discs and Mastercraft Electric</a></li>
-                            <li><a href="https://www.pdga.com/tour/event/54273">TerRon Open at Lake Fenwick presented by
-                                    Mandos Disc Golf Pro Shop and MVP Disc Sports</a></li>
-                            <li><a href="https://www.pdga.com/tour/event/47276">TerRon Open at Lake Fenwick presented by
-                                    Mandos Disc Golf Pro Shop and MVP Disc Sports</a></li>
-                        </ul>
-                    </section>
-                </div>
-            </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Page Title -->
+    <div class="page-title">
+      <h1>Event History Summary</h1>
+      <p>Comprehensive statistics and analysis from cumulative year events</p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section" id="filter-section">
+      <h2>Filter Events</h2>
+      <div class="filter-grid">
+        <div class="filter-item">
+          <label for="year">Year</label>
+          <select id="year">
+            <option value="">All Years</option>
+          </select>
         </div>
-    </main>
+        <div class="filter-item">
+          <label for="division">Division</label>
+          <select id="division">
+            <option value="">All Divisions</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="tier">Event Tier</label>
+          <select id="tier">
+            <option value="">All Tiers</option>
+            <option value="Major">Major</option>
+            <option value="Elite">Elite</option>
+            <option value="Tier-A">Tier-A</option>
+            <option value="Tier-B">Tier-B</option>
+            <option value="Tier-C">Tier-C</option>
+            <option value="Tier-XA">Tier-XA</option>
+            <option value="Tier-XB">Tier-XB</option>
+            <option value="Tier-XC">Tier-XC</option>
+            <option value="Tier-XM">Tier-XM</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label for="country">Country</label>
+          <select id="country">
+            <option value="">All Countries</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Event Section -->
+    <div class="event-section" id="event-section">
+      <!-- Event Header Card -->
+      <div class="event-header-card">
+        <div class="event-header-left">
+          <h1 class="event-title" id="event-name">Event Name</h1>
+          <div class="event-meta">
+            <span class="event-tier-badge" id="event-tier">
+              <span class="tier-badge tier-a">A-Tier</span>
+            </span>
+            <span class="event-dates" id="event-dates"> Date </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Events</h3>
+          <div class="stat-value" id="stat-total-events">0</div>
+          <div class="stat-detail" id="stat-detail-total-event">
+            +12% from last year
+          </div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Participants</h3>
+          <div class="stat-value" id="stat-total-players">0</div>
+          <div class="stat-detail">Across all events</div>
+        </div>
+        <div class="stat-card">
+          <h3>Average Field Size</h3>
+          <div class="stat-value" id="stat-avg-players">0</div>
+          <div class="stat-detail">Players per event</div>
+        </div>
+        <div class="stat-card">
+          <h3>Prize Money Awarded</h3>
+          <div class="stat-value" id="stat-total-prize">$0</div>
+          <div class="stat-detail">Total purse distributed</div>
+        </div>
+      </div>
+
+      <!-- Event Details -->
+      <div class="event-details">
+        <div class="event-detail-card">
+          <div class="detail-content">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">
+              <span id="event-city">City</span>
+              <span id="event-state">State</span>
+              <span id="event-country">Country</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-detail-card">
+          <div class="detail-content">
+            <div class="detail-label">Tournament Director</div>
+            <div class="detail-value event-director" id="event-director">
+              Director Name
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Section -->
+      <div class="chart-section">
+        <div class="viz-options">
+          <button class="viz-button active">Participants Trend</button>
+          <button class="viz-button">Prize Money Analysis</button>
+          <button class="viz-button">Average Ratings</button>
+          <button class="viz-button">Difference in Rating</button>
+        </div>
+        <div class="chart-container" id="viz">
+          [Interactive Chart Visualization Area]
+        </div>
+      </div>
+
+      <div class="division-section" id="division-section">
+        <!-- Data will be inserted here -->
+      </div>
+
+      <div class="events-table past-events-table" id="past-events-table">
+        <h2>Past Events</h2>
+        <!-- <div class="table-container"> -->
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Event Name</th>
+              <th>Date</th>
+              <th>Participants</th>
+              <th>Prize Pool</th>
+            </tr>
+          </thead>
+          <tbody id="past-events-body">
+            <!-- Data will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-container" id="btn-container">
+        <button id="all-events-btn">Back to All Events</button>
+      </div>
+    </div>
+
+    <!-- Events Table -->
+    <div class="events-table" id="events-table">
+      <h2>Recent Events</h2>
+      <table id="eventsTable">
+        <thead id="tableHead">
+          <tr>
+            <th>Event Name</th>
+            <th>Date</th>
+            <th>Tier</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Country</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+      </table>
+      <div class="pagination-container" id="pagination-container">
+        <div class="pagination-info">
+          Showing <span id="startEntry">1</span> to
+          <span id="endEntry">10</span> of
+          <span id="totalEntries">0</span> entries
+        </div>
+
+        <div class="pagination-controls">
+          <button class="pagination-btn" id="firstBtn">First</button>
+          <button class="pagination-btn" id="prevBtn">Previous</button>
+
+          <div id="pageNumbers"></div>
+
+          <button class="pagination-btn" id="nextBtn">Next</button>
+          <button class="pagination-btn" id="lastBtn">Last</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+<script src="script.js" type="module"></script>
 
 </html>
